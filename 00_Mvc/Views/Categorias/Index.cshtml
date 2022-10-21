@@ -1,5 +1,5 @@
-﻿@model IEnumerable<_04_Data.Data.Categoria>
-
+﻿@*@model IEnumerable<_04_Data.Data.Categoria>*@
+@model IEnumerable<_04_Data.Dtos.CategoriaDto>
 @{
     ViewBag.Title = "Index";
 }
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CategoryID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CategoryID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CategoryID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.CategoryID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.CategoryID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.CategoryID })
         </td>
     </tr>
 }

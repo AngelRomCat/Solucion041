@@ -2,7 +2,9 @@
 using System.Net;
 using System.Web.Mvc;
 using _02_Services.CategoriasServices;
+using _02_Services.ClientesServices;
 using _04_Data.Data;
+using _04_Data.Dtos;
 
 namespace _00_Mvc.Controllers
 {
@@ -14,15 +16,15 @@ namespace _00_Mvc.Controllers
         public ActionResult Index(int? id)
         {
             //Necesitamos un IList<Categoria> para pasárselo a la View
-            IList<Categoria> categorias = null;
+            IList<CategoriaDto> categoriaDtos = null;
             //Creamos un objeto de la Clase CategoriasService
             CategoriasService service = null;
             service = new CategoriasService();
             //Lo utilizamos para llegar a su método List 
             //Y, así rellenar nuestro IList<Categoria> categorias
-            categorias = service.List(id);
+            categoriaDtos = service.List(id);
 
-            return View(categorias);
+            return View(categoriaDtos);
         }
 
         // GET: Categorias/Details/5
@@ -36,20 +38,20 @@ namespace _00_Mvc.Controllers
             //hasta aquí
             //Nuevo
             //Necesitamos un objeto Categoria para pasárselo a la View
-            Categoria categoria = null;
+            CategoriaDto categoriaDto = null;
             //Creamos un objeto de la Clase CategoriasService
             CategoriasService service = null;
             service = new CategoriasService();
             //Lo utilizamos para llegar a su método Detail 
             //Y, así rellenar nuestro Categoria categoria
-            categoria = service.Detail(id.Value);
+            categoriaDto = service.Detail(id.Value);
             //Fin Nuevo
             //Esto como estaba:
-            if (categoria == null)
+            if (categoriaDto == null)
             {
                 return HttpNotFound();
             }
-            return View(categoria);
+            return View(categoriaDto);
             //hasta aquí
         }
 
@@ -64,13 +66,13 @@ namespace _00_Mvc.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Categoria categoria)
+        public ActionResult Create(CategoriaDto categoriaDto)
         {
             if (ModelState.IsValid)
             {
                 CategoriasService service = new CategoriasService();
                 bool ok = false;
-                ok = service.Create(categoria);
+                ok = service.Create(categoriaDto);
                 if (ok == true)
                 {
                     //Si esto sucede, entonces llama al método "Index"
@@ -78,7 +80,7 @@ namespace _00_Mvc.Controllers
                 }
             }
             ViewBag.Message = "Las Cagao";
-            return View(categoria);
+            return View(categoriaDto);
         }
 
         // GET: Categorias/Edit/5
@@ -90,21 +92,21 @@ namespace _00_Mvc.Controllers
             }
             //Nuevo
             //Necesitamos un objeto Categoria para pasárselo a la View
-            Categoria categoria = null;
+            CategoriaDto categoriaDto = null;
             //Creamos un objeto de la Clase CategoriasService
             CategoriasService service = null;
             service = new CategoriasService();
             //Lo utilizamos para llegar a su método Detail 
             //Y, así rellenar nuestro Categoria categoria
-            categoria = service.Detail(id.Value);
+            categoriaDto = service.Detail(id.Value);
             //Fin Nuevo
-            if (categoria == null)
+            if (categoriaDto == null)
             {
                 return HttpNotFound();
             }
             //Cogemos el objeto y se lo enviamos a la View
             //LEAMOS LO QUE PONE EN LA VISTA
-            return View(categoria);
+            return View(categoriaDto);
         }
 
         // POST: Categorias/Edit/5
@@ -112,7 +114,7 @@ namespace _00_Mvc.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Categoria categoria)
+        public ActionResult Edit(CategoriaDto categoriaDto)
         {
             if (ModelState.IsValid)
             {
@@ -120,14 +122,14 @@ namespace _00_Mvc.Controllers
                 bool ok = false;
                 //ESTE OBJETO categoria que ha entrado es NUEVO
                 //para comprobarlo, buscamos el que está en la Tabla Categoria
-                Categoria buscada = service.Detail(categoria.CategoryID);
+                CategoriaDto buscada = service.Detail(categoriaDto.CategoryID);
                 //Vemos los valores de el objeto Categoria buscada
                 //buscada.CategoryID = 9
                 //buscada.CategoryName = Bicho
                 //buscada.Description = Cambiamos la descripción
                 //El registro de dentro de la Tabla Categoria NO HA CAMBIADO. PORQUE ES OTRO objeto
 
-                ok = service.Edit(categoria);
+                ok = service.Edit(categoriaDto);
                 if (ok == true)
                 {
                     //Si esto sucede, entonces llama al método "Index"
@@ -135,7 +137,7 @@ namespace _00_Mvc.Controllers
                 }
             }
             ViewBag.Message = "Las Cagao";
-            return View(categoria);
+            return View(categoriaDto);
         }
 
         // GET: Categorias/Delete/5
@@ -147,19 +149,19 @@ namespace _00_Mvc.Controllers
             }            
             //Nuevo
             //Necesitamos un objeto Categoria para pasárselo a la View
-            Categoria categoria = null;
+            CategoriaDto categoriaDto = null;
             //Creamos un objeto de la Clase CategoriasService
             CategoriasService service = null;
             service = new CategoriasService();
             //Lo utilizamos para llegar a su método Detail 
             //Y, así rellenar nuestro Categoria categoria
-            categoria = service.Detail(id.Value);
+            categoriaDto = service.Detail(id.Value);
             //Fin Nuevo
-            if (categoria == null)
+            if (categoriaDto == null)
             {
                 return HttpNotFound();
             }
-            return View(categoria);
+            return View(categoriaDto);
         }
 
         // POST: Categorias/Delete/5
@@ -172,16 +174,16 @@ namespace _00_Mvc.Controllers
         {
             //Nuevo
             //Necesitamos un objeto Categoria para pasárselo a la View
-            Categoria categoria = null;
+            CategoriaDto categoriaDto = null;
             //Creamos un objeto de la Clase CategoriasService
             CategoriasService service = null;
             service = new CategoriasService();
             //Lo utilizamos para llegar a su método Detail 
             //Y, así rellenar nuestro Categoria categoria
-            categoria = service.Detail(id);
+            categoriaDto = service.Detail(id);
             //Fin Nuevo
             bool ok = false;
-            ok = service.Delete(categoria);
+            ok = service.Delete(categoriaDto);
 
             return RedirectToAction("Index");
         }

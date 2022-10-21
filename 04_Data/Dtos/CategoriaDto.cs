@@ -2,7 +2,7 @@
 
 namespace _04_Data.Dtos
 {
-    internal class CategoriaDto
+    public class CategoriaDto
     {       
         //Constructor que recibe un Objeto entity
         public CategoriaDto(Categoria entity)

@@ -1,4 +1,5 @@
 ﻿using _04_Data.Data;
+using _04_Data.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace _02_Services.CategoriasServices
         }
 
         //Index
-        public IList<Categoria> List(int? id)
+        public IList<CategoriaDto> List(int? id)
         {
             IList<Categoria> categorias = null;
             if (id == null || id < 1)
@@ -27,27 +28,40 @@ namespace _02_Services.CategoriasServices
             else
             {
                 categorias = _db.Categoria
-                                .Where(x=>x.CategoryID == id)
+                                .Where(x => x.CategoryID == id)
                                 .ToList();
             }
 
-            return categorias;
+            IList<CategoriaDto> categoriaDtos = new List<CategoriaDto>();
+            foreach (var categoria in categorias)
+            {
+                CategoriaDto categoriaDto = new CategoriaDto(categoria);
+                categoriaDtos.Add(categoriaDto);
+            }
+
+            return categoriaDtos;
         }
         //Details
-        public Categoria Detail(int id)
+        public CategoriaDto Detail(int id)
         {
             Categoria categoria = null;
             categoria = _db.Categoria
                                 .Where(x => x.CategoryID == id)
                                 .FirstOrDefault();
-            return categoria;
+            CategoriaDto categoriaDto = new CategoriaDto(categoria);
+            return categoriaDto;
         }
         //Create
-        public bool Create(Categoria categoria)
+        public bool Create(CategoriaDto categoriaDto)
         {
             bool ok = false;
             try
             {
+                Categoria categoria = new Categoria();
+                categoria.CategoryID = categoriaDto.CategoryID;
+                categoria.CategoryName = categoriaDto.CategoryName;
+                categoria.Description = categoriaDto.Description;
+
                 _db.Categoria.Add(categoria);
                 ok = SaveChanges();
             }
@@ -60,7 +74,7 @@ namespace _02_Services.CategoriasServices
             return ok;
         }
         //Edit
-        public bool Edit(Categoria categoria)
+        public bool Edit(CategoriaDto categoriaDto)
         {
             bool ok = false;
             try
@@ -68,12 +82,12 @@ namespace _02_Services.CategoriasServices
                 //Buscamos el registro de la Tabla Categoria que tiene el mismo id
                 //que el objeto que ha creado la view
                 Categoria buscada = _db.Categoria
-                                    .Where(x => x.CategoryID == categoria.CategoryID)
+                                    .Where(x => x.CategoryID == categoriaDto.CategoryID)
                                     .FirstOrDefault();
                 //Le pasamos los valores del objeto que ha creado la vista:
                 //buscada.CategoryID = categoria.CategoryID;
-                buscada.CategoryName = categoria.CategoryName;
-                buscada.Description = categoria.Description;
+                buscada.CategoryName = categoriaDto.CategoryName;
+                buscada.Description = categoriaDto.Description;
 
                 //Guardamos cambios:
                 ok = SaveChanges();
@@ -87,11 +101,13 @@ namespace _02_Services.CategoriasServices
             return ok;
         }
         //Delete
-        public bool Delete(Categoria categoria)
+        public bool Delete(CategoriaDto categoriaDto)
         {
             bool ok = false;
             try
             {
+                Categoria categoria = _db.Categoria.Where(x => x.CategoryID == categoriaDto.CategoryID).FirstOrDefault();
+
                 _db.Categoria.Remove(categoria);
                 //Guardamos cambios:
                 ok = SaveChanges();

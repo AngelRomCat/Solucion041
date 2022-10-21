@@ -5,6 +5,7 @@ using _04_Data.Data;
 using _02_Services.ProductosServices;
 using _02_Services.CategoriasServices;
 using _02_Services.ProveedoresServices;
+using _04_Data.Dtos;
 
 namespace _00_Mvc.Controllers
 {
@@ -199,16 +200,16 @@ namespace _00_Mvc.Controllers
         {
             CategoriasService service = null;
             service = new CategoriasService();
-            IList<Categoria> categorias = null;
-            categorias = service.List(null);
+            IList<CategoriaDto> categoriaDtos = null;
+            categoriaDtos = service.List(null);
             SelectList selectList = null;
             if (id != null && id > 0)
             {
-                selectList = new SelectList(categorias, "CategoryID", "CategoryName", id);
+                selectList = new SelectList(categoriaDtos, "CategoryID", "CategoryName", id);
             }
             else
             {
-                selectList = new SelectList(categorias, "CategoryID", "CategoryName");
+                selectList = new SelectList(categoriaDtos, "CategoryID", "CategoryName");
             }
 
             return selectList;
